@@ -35,13 +35,21 @@ guard 'rspec', all_after_pass: false, cli: '--drb   ' do
     (m[1][/_pages/] ? "spec/requests/#{m[1]}_spec.rb" :
                       "spec/requests/#{m[1].singularize}_pages_spec.rb")
   end
-  watch(%r{^app/views/layouts/.*}) do |m|
-    "spec/requests"
-  end
   watch(%r{^app/controllers/sessions_controller\.rb$}) do |m|
     "spec/requests/authentication_pages_spec.rb"
   end
 
+  # === My own additions ===
+  # Test all requests when 'layouts' is changed
+  watch(%r{^app/views/layouts/.*}) do |m|
+    "spec/requests"
+  end
+  # Test appropciate things when a helper is changed
+  watch(%r{^app/helpers/(.+)_helper.rb}) do |m|
+    m[1][/application/] ? "spec/requests" :
+                          "spec/requests/#{m[1]}_spec.rb"
+  end
+  
 end
 
 guard 'spork', :cucumber_env => { 'RAILS_ENV' => 'test' },
