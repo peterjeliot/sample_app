@@ -86,6 +86,11 @@ describe "AuthenticationPages" do
         before { delete user_path(user) }
         specify { expect(response).to redirect_to(root_url) }
       end
+
+      describe "submitting a PATCH request to the Users#update action" do
+        before { patch user_path(user) }
+        specify { expect(response).to redirect_to(root_url) }
+      end
     end
   end
 end
