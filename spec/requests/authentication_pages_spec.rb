@@ -40,6 +40,11 @@ describe "AuthenticationPages" do
       describe "followed by signout" do
         before { click_link "Sign out" }
         it { should have_link('Sign in') }
+
+        describe "twice" do
+          before { delete signout_path }
+          it { should have_link('Sign in') }
+        end
       end
     end
   end

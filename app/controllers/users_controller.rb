@@ -12,17 +12,27 @@ class UsersController < ApplicationController
   end
 
   def new
-    @user = User.new
+    if signed_in?
+      flash[:error] = "Sign out first!"
+      redirect_to root_url
+    else
+      @user = User.new
+    end
   end
 
   def create
-    @user = User.new(user_params)
-    if @user.save
-      sign_in @user
-      flash[:success] = "Welcome to the Sample App!"
-      redirect_to @user
-    else
+    if signed_in?
+      flash[:error] = "Stop that!"
       render 'new'
+    else
+      @user = User.new(user_params)
+      if @user.save
+        sign_in @user
+        flash[:success] = "Welcome to the Sample App!"
+        redirect_to @user
+      else
+        render 'new'
+      end
     end
   end
 
