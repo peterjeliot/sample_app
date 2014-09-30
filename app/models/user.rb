@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  default_scope order('id ASC')
+  default_scope { order('id ASC') }
   before_save { self.email = email.downcase }
   before_create :create_remember_token
 

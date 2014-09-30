@@ -11,8 +11,14 @@ describe "AuthenticationPages" do
       before { click_button "Sign in" }
 
       it { should have_content('Sign in') }
-      it { should have_title('Sign in') }
+      it { should have_title('Sign in')   }
       it { should have_selector('div.alert.alert-error') }
+
+      it { should_not have_link('Users')    }
+      it { should_not have_link('Sign out') }
+      it { should_not have_link('Profile')  }
+      it { should_not have_link('Settings') }
+      it { should have_link('Sign in', href: signin_path) }
 
       describe "after visiting another page" do
         before { click_link "Home" }
@@ -77,7 +83,7 @@ describe "AuthenticationPages" do
     end
 
     describe "as non-admin user" do
-      let(:user) { FactoryGirl.create(:user) }
+      let(:user)      { FactoryGirl.create(:user) }
       let(:non_admin) { FactoryGirl.create(:user) }
 
       before { sign_in non_admin, no_capybara: true }
